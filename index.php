@@ -69,7 +69,6 @@ foreach ($dir as $fileinfo) {
 
 foreach($files as $date => $file){
 		$getfile = array_slice(scandir($path.$file), 2); //removes "." ".." dirs from scandir
-		var_dump($getfile);
 		if(!empty($getfile)) { 
 		$filename = $getfile[0];
 		$name = str_replace(".tf", "", $filename);
