@@ -62,15 +62,14 @@ $dir = new DirectoryIterator($path);
 foreach ($dir as $fileinfo) {
 	if (is_dir($fileinfo->getFilename())) continue;
 	$files[strtotime(str_replace(".", "/", $fileinfo->getFilename()))] = $fileinfo->getFilename();
-}
+	}
 
 //krsort will sort in reverse order
 	krsort($files);
 
 foreach($files as $date => $file){
 		$getfile = array_slice(scandir($path.$file), 2);
-		if(!empty($getfile)) { // && substr($file,0,3) != "DEL") {
-
+		if(!empty($getfile)) { 
 		$filename = $getfile[0];
 		$name = str_replace(".tf", "", $filename);
 	
@@ -100,28 +99,5 @@ echo "</main></body></html>";
 //	 Misc. Funcitons
 //
 
-function format_line($rawline, $code) {
-	if (strpos($rawline, '[code]') !== false) {
-		echo "<pre><code class=\"php\">";
-		$code = true;
-	} elseif (strpos($rawline, '[/code]') !== false)  {
-		echo "</pre></code>";
-		$code = false;
-	} else {
-		if($code) 
-			echo htmlspecialchars($rawline);
-		else 
-			echo nl2br(htmlspecialchars($rawline)); 
-	}
-	return $code;
-}	
-
-
-function read($file) {
-    $fp = fopen($file, 'rb');
-    while(($line = fgets($fp)) !== false)
-        yield $line;
-    fclose($fp);
-}
  ?>
 
