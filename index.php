@@ -61,7 +61,12 @@ $dir = new DirectoryIterator($path);
 <?php
 foreach ($dir as $fileinfo) {
 	if (is_dir($fileinfo->getFilename())) continue;
-	$files[strtotime(str_replace(".", "/", $fileinfo->getFilename()))] = $fileinfo->getFilename();
+	
+	$str_time = str_replace(".", "/", $fileinfo->getFilename());
+	if(strpos($str_time,"-"))  //multi dates
+		$files[strtotime($str_time)+abs(substr($str_time, strpos($str_time,"-")))] = $fileinfo->getFilename(); //if dir has "-" (meaning multi date post) then we add it to the base time of that date to matain sorting order
+	else
+		$files[strtotime($str_time)] = $fileinfo->getFilename();
 	}
 
 //krsort will sort in reverse order
