@@ -51,7 +51,7 @@ $dir = new DirectoryIterator($path);
 <?php
 foreach ($dir as $fileinfo) {
 	if (is_dir($fileinfo->getFilename())) continue;
-	$files[$fileinfo->getMTime()] = $fileinfo->getFilename();
+	$files[strtotime(str_replace(".", "/", $fileinfo->getFilename()))] = $fileinfo->getFilename();
 }
 
 //krsort will sort in reverse order
@@ -59,7 +59,7 @@ foreach ($dir as $fileinfo) {
 
 foreach($files as $date => $file){
 		$getfile = array_slice(scandir($path.$file), 2);
-		if(!empty($getfile) && substr($file,0,3) != "DEL") {
+		if(!empty($getfile)) { // && substr($file,0,3) != "DEL") {
 
 		$filename = $getfile[0];
 		$name = str_replace(".tf", "", $filename);
