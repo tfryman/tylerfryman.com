@@ -27,7 +27,6 @@ $dir = new DirectoryIterator($path);
 <link rel="stylesheet" href="/style/prism.css" data-noprefix />
 <script src="/style/prism.js"></script>
 <body>
-
 <article>
 	<header>
 		<h1 class="logo">Tyler Fryman</h1>
@@ -35,29 +34,41 @@ $dir = new DirectoryIterator($path);
 </article>
 <main>
 <?php
-foreach ($dir as $fileinfo) {
-	if (is_dir($fileinfo->getFilename())) continue;
+if(substr($_SERVER['REQUEST_URI'],-1,1) == "/") $_SERVER['REQUEST_URI'] = substr($_SERVER['REQUEST_URI'],0,-1); //remove trailing /
+if(empty($_SERVER['REQUEST_URI']) OR $_SERVER['REQUEST_URI'] == "/" OR $_SERVER['REQUEST_URI'] == "/index.php") { //whole blog
+	foreach ($dir as $fileinfo) {
+		if (is_dir($fileinfo->getFilename())) continue;
 	
-	$str_time = str_replace(".", "/", $fileinfo->getFilename());
-	if(strpos($str_time,"-"))  //multi dates
-		$files[strtotime($str_time)+abs(substr($str_time, strpos($str_time,"-")))] = $fileinfo->getFilename(); //if dir has "-" (meaning multi date post) then we add it to the base time of that date to matain sorting order
-	else
-		$files[strtotime($str_time)] = $fileinfo->getFilename();
-	}
+		$str_time = str_replace(".", "/", $fileinfo->getFilename());
+		if(strpos($str_time,"-"))  //multi dates
+			$files[strtotime($str_time)+abs(substr($str_time, strpos($str_time,"-")))] = $fileinfo->getFilename(); //if dir has "-" (meaning multi date post) then we add it to the base time of that date to matain sorting order
+		else
+			$files[strtotime($str_time)] = $fileinfo->getFilename();
+		}
+}
+else { // single blog post
+$post = explode("/",substr($_SERVER['REQUEST_URI'],1,-1));
+var_dump($post);
+die();
+
+
+}
 
 //krsort will sort in reverse order
 	krsort($files);
 
 foreach($files as $date => $file){
-		$getfile = array_slice(scandir($path.$file), 2); //removes "." ".." dirs from scandir
-		if(!empty($getfile)) { 
-		$filename = $getfile[0];
-		$name = str_replace(".tf", "", $filename);
+			$getfile = array_slice(scandir($path.$file), 2); //removes "." ".." dirs from scandir
+			if(!empty($getfile)) { 
+				$filename = $getfile[0];
+				$name = str_replace(".tf", "", $filename);
 	
 ?>
 
 <article>
+	<header>
 		<h2><?php echo $name;?> </h2>
+	</header>
 	<p>
 <?php
 echo "<small>".date("F j, Y",$date)."</small>"; 
