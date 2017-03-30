@@ -23,6 +23,7 @@ $dir = new DirectoryIterator($path);
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tyler Fryman</title>
+<link rel="icon" type="image/png" href="images/favicon.ico">
 <link rel="stylesheet" href="/style/style.css" data-noprefix />
 <link rel="stylesheet" href="/style/prism.css" data-noprefix />
 <script src="/style/prism.js"></script>
