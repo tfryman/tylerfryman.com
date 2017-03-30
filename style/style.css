@@ -13,6 +13,9 @@
 	h1,h2,h3 {
 		line-height:0;
 	}
+	h2 a, h2 a:link { color: black; }
+	h2 a:visited { color: black; }
+	h2 a:hover, h2 a:active { color: black; }
 	@media print{
 		body{
 			max-width:none

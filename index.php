@@ -15,7 +15,6 @@ $Parsedown = new Parsedown();
 
 $files = array();
 $path = "posts/";
-$dir = new DirectoryIterator($path);
 ?>
 
 <!DOCTYPE html>
@@ -35,31 +34,36 @@ $dir = new DirectoryIterator($path);
 </article>
 <main>
 <?php
-if(substr($_SERVER['REQUEST_URI'],-1,1) == "/") $_SERVER['REQUEST_URI'] = substr($_SERVER['REQUEST_URI'],0,-1); //remove trailing /
-if(empty($_SERVER['REQUEST_URI']) OR $_SERVER['REQUEST_URI'] == "/" OR $_SERVER['REQUEST_URI'] == "/index.php") { //whole blog
-	foreach ($dir as $fileinfo) {
-		if (is_dir($fileinfo->getFilename())) continue;
-	
-		$str_time = str_replace(".", "/", $fileinfo->getFilename());
-		if(strpos($str_time,"-"))  //multi dates
-			$files[strtotime($str_time)+abs(substr($str_time, strpos($str_time,"-")))] = $fileinfo->getFilename(); //if dir has "-" (meaning multi date post) then we add it to the base time of that date to matain sorting order
-		else
-			$files[strtotime($str_time)] = $fileinfo->getFilename();
+if(substr($_SERVER['REQUEST_URI'],-1,1) == "/") 
+	$_SERVER['REQUEST_URI'] = substr($_SERVER['REQUEST_URI'],1,-1); //remove leading & trailing slash
+else
+	$_SERVER['REQUEST_URI'] = substr($_SERVER['REQUEST_URI'],1); //remove leading slash
+
+//Sanity Check Data
+	if(empty($_SERVER['REQUEST_URI']) OR $_SERVER['REQUEST_URI'] == "/" OR $_SERVER['REQUEST_URI'] == "/index.php")  //whole blog
+		$files = get_files($path);
+	else { // single blog post
+		$post = explode("/",$_SERVER['REQUEST_URI']);
+		if($post[0] != "post" or count($post) <> 2)  //not a valid dir for single post
+			$files = get_files($path); //get all blog posts
+		else { 
+				$filepath = rsearch('posts/', str_replace("-"," ",$post[1]).".tf");
+				if($filepath) { //its a valid and real blog post
+					$str_time = str_replace(array(".","posts/"), array("/",""), $filepath->getPath()); //change date dir to a valid timestamp
+					$files[strtotime((strpos($str_time,"-") === FALSE ? $str_time : substr($str_time,0,strpos($str_time,"-"))))]  = $filepath->getPath(); //only get dir chars up to "-" for multi date blog posts
+				}		
+			else
+				$files[] = get_files($path); //get all blog posts
 		}
-}
-else { // single blog post
-$post = explode("/",substr($_SERVER['REQUEST_URI'],1,-1));
-var_dump($post);
-die();
-
-
-}
+	}	
 
 //krsort will sort in reverse order
 	krsort($files);
 
 foreach($files as $date => $file){
+			if(substr($file,0,5) == "posts") $path = "";
 			$getfile = array_slice(scandir($path.$file), 2); //removes "." ".." dirs from scandir
+			echo "<br>";
 			if(!empty($getfile)) { 
 				$filename = $getfile[0];
 				$name = str_replace(".tf", "", $filename);
@@ -68,7 +72,7 @@ foreach($files as $date => $file){
 
 <article>
 	<header>
-		<h2><?php echo $name;?> </h2>
+		<h2><?php echo "<a href=\"post/".str_replace(" ","-",$name)."\">$name</a>";?> </h2>
 	</header>
 	<p>
 <?php
@@ -92,5 +96,31 @@ echo "</main></body></html>";
 //	 Misc. Funcitons
 //
 
+function get_files($path) {
+$dir = new DirectoryIterator($path);
+	foreach ($dir as $fileinfo) {
+		if (is_dir($fileinfo->getFilename())) continue;
+	
+		$str_time = str_replace(".", "/", $fileinfo->getFilename());
+		if(strpos($str_time,"-"))  //multi dates
+			$files[strtotime(substr($str_time,0,strpos($str_time,"-")))+abs(substr($str_time, strpos($str_time,"-")))] = $fileinfo->getFilename(); //if dir has "-" (meaning multi date post) then we add it to the base time of that date to matain sorting order
+		else
+			$files[strtotime($str_time)] = $fileinfo->getFilename();
+		}
+		
+		return $files;
+}
+
+function rsearch($folder, $pattern) {
+// http://stackoverflow.com/a/36912410
+// Sadee - 04/28/16
+   $iti = new RecursiveDirectoryIterator($folder);
+    foreach(new RecursiveIteratorIterator($iti) as $file){
+         if(strpos($file , $pattern) !== false){
+            return $file;
+         }
+    }
+    return false;
+}
  ?>
 
