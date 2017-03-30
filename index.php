@@ -63,7 +63,6 @@ else
 foreach($files as $date => $file){
 			if(substr($file,0,5) == "posts") $path = "";
 			$getfile = array_slice(scandir($path.$file), 2); //removes "." ".." dirs from scandir
-			echo "<br>";
 			if(!empty($getfile)) { 
 				$filename = $getfile[0];
 				$name = str_replace(".tf", "", $filename);
@@ -81,7 +80,7 @@ echo $Parsedown->text(file_get_contents($path.$file."/".$filename));
 ?>
 
 </article>
-<hr>
+<hr><br>
 <?php 
 	} //array not empty
 
