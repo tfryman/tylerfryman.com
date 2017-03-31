@@ -77,7 +77,7 @@ echo $Parsedown->text(file_get_contents($path.$file."/".$filename));
 ?>
 
 </article>
-<hr><br>
+<hr>
 <?php 
 	} //array not empty
 
@@ -85,11 +85,11 @@ echo $Parsedown->text(file_get_contents($path.$file."/".$filename));
 
 echo "<article><small>Page created in " . round(microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"],4) . " seconds.</small></article>";
 
-echo "</main></body><script src="/style/prism.js"></script>";
+echo "</main></body><script src=\"/style/prism.js\"></script>";
 
 include_once("includes/analyticstracking.php");
 
-echo </html>";
+echo "</html>";
 
 
 //
