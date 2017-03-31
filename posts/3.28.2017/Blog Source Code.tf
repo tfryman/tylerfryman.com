@@ -1,4 +1,4 @@
-I've open-sourced the [PHP source code](https://tfryman@gitlab.com/tfryman/tylerfryman.com.git) for this blog and the posts (in markdown formatted files) to GitLab under the [MIT License](https://gitlab.com/tfryman/tylerfryman.com/raw/master/LICENSE.md). I've not wrote PHP in years, but figured creating this blog and adding in features would be a good exercise to get back into the swing of things. 
+I've open-sourced the [PHP source code](https://github.com/tfryman/tylerfryman.com) for this blog and the posts (in markdown formatted files) to GitLab under the [MIT License](https://github.com/tfryman/tylerfryman.com/blob/master/LICENSE.md). I've not wrote PHP in years, but figured creating this blog and adding in features would be a good exercise to get back into the swing of things. 
 
 It basically loops through all the directories in *posts/* and adds them into an array after coverting the directory name into an Unix timestamp which we reverse so we show the newest posts first:
 
