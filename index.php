@@ -8,8 +8,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-
-include_once("includes/analyticstracking.php");
 include_once("includes/Parsedown.php");
 $Parsedown = new Parsedown();
 
@@ -25,7 +23,6 @@ $path = "posts/";
 <link rel="icon" type="image/png" href="images/favicon.ico">
 <link rel="stylesheet" href="/style/style.css" data-noprefix />
 <link rel="stylesheet" href="/style/prism.css" data-noprefix />
-<script src="/style/prism.js"></script>
 <body>
 <article>
 	<header>
@@ -88,7 +85,11 @@ echo $Parsedown->text(file_get_contents($path.$file."/".$filename));
 
 echo "<article><small>Page created in " . round(microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"],4) . " seconds.</small></article>";
 
-echo "</main></body></html>";
+echo "</main></body><script src="/style/prism.js"></script>";
+
+include_once("includes/analyticstracking.php");
+
+echo </html>";
 
 
 //
