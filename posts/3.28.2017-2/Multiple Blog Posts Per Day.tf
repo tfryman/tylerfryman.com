@@ -34,13 +34,11 @@ array(4) { [1490659202]=> string(11) "3.28.2017-2" [1490659200]=> string(9) "3.2
 
 See how **3.28.2017-2** is two seconds after **3.28.2017** in the array? We do this in the [get_files() function](https://github.com/tfryman/tylerfryman.com/blob/master/index.php#L98):
 ~~~php
-
 		if(strpos($str_time,"-"))  //multi dates
-			$files[strtotime(substr($str_time,0,strpos($str_time,"-")))+abs(substr($str_time, strpos($str_time,"-")))] = $fileinfo->getFilename(); //if dir has "-" (meaning multi date post) then we add it to the base time of that date to matain sorting order
+			$files[strtotime(substr($str_time,0,strpos($str_time,"-")))+abs(substr($str_time, strpos($str_time,"-")))] = $fileinfo->getFilename(); //if dir has "-" (meaning multi date post) then we add it to the base time of that date to maintain sorting order
 		else
 			$files[strtotime($str_time)] = $fileinfo->getFilename();
 		}
-		
 		return $files;
 }
 ~~~
