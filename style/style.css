@@ -1,3 +1,7 @@
+	
+	* { //debugging only
+		//outline: 1px dashed red; 
+		} 
 	body{
 		margin:1em auto;
 		max-width:40em;
@@ -10,8 +14,9 @@
 		font-size: 35pt;
 		text-decoration: underline;
 		}
-	h1,h2,h3 {
-		line-height:0;
+	h2,h3 {
+		line-height:1.0;
+		text-align: left;
 	}
 	h2 a, h2 a:link { color: black; }
 	h2 a:visited { color: black; }
