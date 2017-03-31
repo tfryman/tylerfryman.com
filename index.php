@@ -87,7 +87,7 @@ echo "<article><small>Page created in " . round(microtime(true) - $_SERVER["REQU
 
 echo "</main></body><script src=\"/style/prism.js\"></script>";
 
-include_once("includes/analyticstracking.php");
+include_once("includes/analyticstracking.php"); //google analytics
 
 echo "</html>";
 
@@ -99,15 +99,13 @@ echo "</html>";
 function get_files($path) {
 $dir = new DirectoryIterator($path);
 	foreach ($dir as $fileinfo) {
-		if (is_dir($fileinfo->getFilename())) continue;
-	
+		if (is_dir($fileinfo->getFilename())) continue; //skip . .. dirs
 		$str_time = str_replace(".", "/", $fileinfo->getFilename());
 		if(strpos($str_time,"-"))  //multi dates
 			$files[strtotime(substr($str_time,0,strpos($str_time,"-")))+abs(substr($str_time, strpos($str_time,"-")))] = $fileinfo->getFilename(); //if dir has "-" (meaning multi date post) then we add it to the base time of that date to matain sorting order
 		else
 			$files[strtotime($str_time)] = $fileinfo->getFilename();
 		}
-		
 		return $files;
 }
 
