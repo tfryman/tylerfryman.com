@@ -26,7 +26,7 @@ $path = "posts/";
 <body>
 <article>
 	<header>
-		<h1 class="logo">Tyler Fryman</h1>
+		<h1 class="logo"><a href="/">Tyler Fryman</a></h1>
 	</header>
 </article>
 <main>
@@ -85,11 +85,7 @@ echo $Parsedown->text(file_get_contents($path.$file."/".$filename));
 
 echo "<article><small>Page created in " . round(microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"],4) . " seconds.</small></article>";
 
-echo "</main></body><script src=\"/style/prism.js\"></script>";
-
-include_once("includes/analyticstracking.php"); //google analytics
-
-echo "</html>";
+echo "</main></body><script src=\"/style/prism.js\"></script></html>";
 
 
 //

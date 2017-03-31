@@ -13,6 +13,9 @@
 		line-height:1.0;	
 		font-size: 35pt;
 		text-decoration: underline;
+		a:link { color: black; }
+		a:visited { color: black; }
+		a:hover, a:active { color: black; }
 		}
 	h2,h3 {
 		line-height:1.0;
