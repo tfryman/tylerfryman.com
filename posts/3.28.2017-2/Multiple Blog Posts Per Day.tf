@@ -29,15 +29,21 @@ posts/
 Notice that **"-2"** for the *Multiple Blog Posts Per Day* directory? We use that number to add to the *base*  number given by [strtotime](http://php.net/manual/en/function.strtotime.php) so our newest posts always sort correctly.
 
 ~~~php
-array(5) { [1490666402]=> string(11) "3.28.2017-2" [1490659200]=> string(9) "3.28.2017" [1490313600]=> string(9) "3.24.2017" [1489968000]=> string(9) "3.20.2017" }
+array(4) { [1490659202]=> string(11) "3.28.2017-2" [1490659200]=> string(9) "3.28.2017" [1490313600]=> string(9) "3.24.2017" [1489968000]=> string(9) "3.20.2017" }
 ~~~
 
-See how **3.28.2017-2** is two seconds after **3.28.2017** in the array? We do this  here:
+See how **3.28.2017-2** is two seconds after **3.28.2017** in the array? We do this in the [get_files() function](https://github.com/tfryman/tylerfryman.com/blob/master/index.php#L98):
 ~~~php
-	if(strpos($str_time,"-"))  //multi dates
-		$files[strtotime($str_time)+abs(substr($str_time, strpos($str_time,"-")))] = $fileinfo->getFilename(); //if dir has "-" (meaning multi date post) then we add it to the base time of that date to matain sorting order
-	else
-		$files[strtotime($str_time)] = $fileinfo->getFilename();
-	}
+
+		if(strpos($str_time,"-"))  //multi dates
+			$files[strtotime(substr($str_time,0,strpos($str_time,"-")))+abs(substr($str_time, strpos($str_time,"-")))] = $fileinfo->getFilename(); //if dir has "-" (meaning multi date post) then we add it to the base time of that date to matain sorting order
+		else
+			$files[strtotime($str_time)] = $fileinfo->getFilename();
+		}
+		
+		return $files;
+}
 ~~~
 The abs() function gets rid of the "-" returned from our substr, I could have also used a sub_replace(), but abs() just seemed cleaner.
+
+*Updated 3/31/2017:* The orginal code didn't strip out the "-2" from the dir name and thus returned the wrong timestamp. This was solved with a substr() inside the if()'s TRUE statement above.
